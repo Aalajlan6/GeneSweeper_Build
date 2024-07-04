@@ -4,6 +4,8 @@ import tkinter as tk
 import ipywidgets
 path = os.path.dirname('__file__')
 csv_file_path = os.path.join(path, 'CSV_files')
+out_file_path = os.path.join(path, 'Output_files')
+
 extension = '.csv'
 files = [file for file in os.listdir(csv_file_path) if file.endswith(extension)]
 print(files)
@@ -49,6 +51,9 @@ def on_begin():
     golden_products = list(unique_items)
     if len(golden_products) > 0:
         print(golden_products)
+        for product in golden_products:
+            filtered_df = df[df["PRODUCT NAME"].str.contains(product)]
+            filtered_df.to_csv(os.path.join(out_file_path, (product + ".csv")))
     else:
         print("No items are in cart!")
 
