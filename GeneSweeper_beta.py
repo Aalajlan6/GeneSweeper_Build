@@ -8,8 +8,7 @@ out_file_path = os.path.join(path, 'Output_files')
 
 extension = '.csv'
 files = [file for file in os.listdir(csv_file_path) if file.endswith(extension)]
-print(files)
-
+# print(files)
 dfs = []
 
 for file in files:
@@ -49,11 +48,12 @@ def on_begin():
         items_list.append(item)
     unique_items = set(items_list)
     golden_products = list(unique_items)
-    if len(golden_products) > 0:
+    if len(golden_products) > 0: #Main loop for Running filteration
         print(golden_products)
         for product in golden_products:
-            filtered_df = df[df["PRODUCT NAME"].str.contains(product)]
+            filtered_df = df[df["PRODUCT NAME"].str.lower() == product.lower()]
             filtered_df.to_csv(os.path.join(out_file_path, (product + ".csv")))
+        print("done")
     else:
         print("No items are in cart!")
 
