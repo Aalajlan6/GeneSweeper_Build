@@ -1,8 +1,10 @@
 import pandas as pd
 import os
 import tkinter as tk
+from tkinter import *
 import ipywidgets
-path = os.path.dirname('__file__')
+from matplotlib import pyplot as plt
+path = os.path.dirname(os.path.abspath(__file__))
 csv_file_path = os.path.join(path, 'CSV_files')
 out_file_path = os.path.join(path, 'Output_files')
 
@@ -19,7 +21,7 @@ for file in files:
 products = df['PRODUCT NAME'].unique()
 
 #Show suggestions
-def key_press(event):
+def key_press(event, entry, listbox):
     input_text = entry.get()
     listbox.delete(0, tk.END)
     matching_products = [product for product in products if product.lower().startswith(input_text.lower())] # Change from starts with to include
@@ -60,42 +62,67 @@ def on_begin():
 def on_clear():
     search_list.delete('0','end')
     
+def startPage():
+    root.withdraw()
+    root2 = tk.Tk()
+    root2.title("Product Search")
+    global listbox, search_list  # Make listbox and search_list accessible globally
+    entry = tk.Entry(root2, width=50)
+    entry.place(x=200, y=200)
+    entry.pack(padx=10, pady=10)
+    input_text = entry.get()
+    frame = tk.Frame(root2)
+    frame.pack(padx = 10, pady= 10)
+    listbox = tk.Listbox(frame, width=50, height=10, selectmode='multiple')
+    listbox.grid(row=1, column=0)
+    entry.bind('<KeyRelease>', lambda event: key_press(event, entry, listbox))
+    
 
+
+    products_label = tk.Label(frame, text="Choose Products for Search")
+    products_label.grid(row=0, column=0)
+
+    selected_label = tk.Label(frame, text="Cart")
+    selected_label.grid(row=0, column=1)
+
+
+
+    search_list = tk.Listbox(frame, width=50, height=10)
+    search_list.grid(row=1, column=1)
+
+    bframe = tk.Frame(root2)
+    bframe.pack(padx = 10, pady= 10)
+            
+    button = tk.Button(bframe, text='Add to cart', command=on_list_select)
+    button.grid(row=1, column=0, padx=10)
+    button2 = tk.Button(bframe, text='Begin', command=on_begin)
+    button2.grid(row=1, column=1, padx=10)
+    button3 = tk.Button(bframe, text='Clear', command=on_clear)
+    button3.grid(row=1, column=2, padx=10)
+    button_back = tk.Button(bframe, text='Back to Main', command=lambda: back_to_root(root2))
+    button_back.grid(row=2, column=1, padx=10, pady=10)
+
+def startScraper():
+    root.withdraw
+    root3 = tk.Tk()
+    root3.title('FASTA scraper')
+
+def back_to_root(root2):
+    # Close root2 and show the root window again
+    root2.destroy()
+    root.deiconify()
 
 #Main loop
 root = tk.Tk()
-root.title("Product Search")
+root.title("Main Window")
+root.geometry("300x300+50+50")
 
-entry = tk.Entry(root, width=50)
-entry.place(x=200, y=200)
-entry.pack(padx=10, pady=10)
-input_text = entry.get()
-entry.bind('<KeyRelease>' ,key_press)
+button_to_open_root2 = tk.Button(root, text="Open Product Search", command=startPage)
+button_to_open_root2.pack(pady=20)
+button_to_open_scraper = tk.Button(root, text="Scrape FASTA files", command=startScraper)
+button_to_open_scraper.pack(pady=20)
 
-frame = tk.Frame(root)
-frame.pack(padx = 10, pady= 10)
 
-products_label = tk.Label(frame, text="Choose Products for Search")
-products_label.grid(row=0, column=0)
-
-selected_label = tk.Label(frame, text="Cart")
-selected_label.grid(row=0, column=1)
-
-listbox = tk.Listbox(frame, width=50, height=10, selectmode='multiple')
-listbox.grid(row=1, column=0)
-
-search_list = tk.Listbox(frame, width=50, height=10)
-search_list.grid(row=1, column=1)
-
-bframe = tk.Frame(root)
-bframe.pack(padx = 10, pady= 10)
-           
-button = tk.Button(bframe, text='Add to cart', command=on_list_select)
-button.grid(row=1, column=0, padx=10)
-button2 = tk.Button(bframe, text='Begin', command=on_begin)
-button2.grid(row=1, column=1, padx=10)
-button3 = tk.Button(bframe, text='Clear', command=on_clear)
-button3.grid(row=1, column=2, padx=10)
 
 root.mainloop()
 
