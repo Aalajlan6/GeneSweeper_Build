@@ -2,7 +2,8 @@ import pandas as pd
 import os
 import tkinter as tk
 from tkinter import *
-import ipywidgets
+import csv
+#import ipywidgets
 from matplotlib import pyplot as plt
 path = os.path.dirname(os.path.abspath(__file__))
 csv_file_path = os.path.join(path, 'CSV_files')
@@ -10,13 +11,24 @@ out_file_path = os.path.join(path, 'Output_files')
 
 extension = '.csv'
 files = [file for file in os.listdir(csv_file_path) if file.endswith(extension)]
+
+
 # print(files)
 dfs = []
 
 for file in files:
-    df = pd.read_csv(os.path.join(csv_file_path,file), delimiter='\t')
-    dfs.append(df)
-    df = pd.concat(dfs, ignore_index=True)
+    # df = pd.read_csv(os.path.join(csv_file_path,file), delimiter='\t')
+    # dfs.append(df)
+    # df = pd.concat(dfs, ignore_index=True)
+    file = "./CSV_files/" + file
+    with open(file, 'r') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        #print([row for row in csv_reader])
+        for row in csv_reader:
+            values = row[0].split()
+            id = values[0]
+            loc_id = values[2]
+            url = f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={id}&data_type=assembled&gene_oid={loc_id}"
 
 products = df['PRODUCT NAME'].unique()
 
@@ -121,8 +133,6 @@ button_to_open_root2 = tk.Button(root, text="Open Product Search", command=start
 button_to_open_root2.pack(pady=20)
 button_to_open_scraper = tk.Button(root, text="Scrape FASTA files", command=startScraper)
 button_to_open_scraper.pack(pady=20)
-
-
 
 root.mainloop()
 

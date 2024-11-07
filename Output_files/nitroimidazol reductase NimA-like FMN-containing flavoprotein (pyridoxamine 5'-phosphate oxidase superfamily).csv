@@ -1,0 +1,8 @@
+,GENE ID,LOCUS TAG,PRODUCT NAME,SCAFFOLD ID,GENE SEQ LENGTH,READS COUNT,COVERAGE, MEDIAN,READS COUNT ANTISENSE,COVERAGE ANTISENSE,MEDIAN ANTISENSE
+5890,3300048830 assembled Ga0498909_116876_3_311,,nitroimidazol reductase NimA-like FMN-containing flavoprotein (pyridoxamine 5'-phosphate oxidase superfamily),Ga0498909_116876,309,13,2.09910033189505e-09,6.0,0,0.0,0.0
+70913,3300048830 assembled Ga0498909_066374_22_441,,nitroimidazol reductase NimA-like FMN-containing flavoprotein (pyridoxamine 5'-phosphate oxidase superfamily),Ga0498909_066374,420,19,2.25710953270254e-09,7.0,0,0.0,0.0
+74901,3300048830 assembled Ga0498909_065190_1_273,,nitroimidazol reductase NimA-like FMN-containing flavoprotein (pyridoxamine 5'-phosphate oxidase superfamily),Ga0498909_065190,273,5,9.13809527409933e-10,2.0,0,0.0,0.0
+101543,3300048830 assembled Ga0498909_008652_262_714,,nitroimidazol reductase NimA-like FMN-containing flavoprotein (pyridoxamine 5'-phosphate oxidase superfamily),Ga0498909_008652,453,34,3.7448035467633606e-09,10.0,4,4.4056512314863005e-10,1.0
+155210,3300048830 assembled Ga0498909_158381_1_303,,nitroimidazol reductase NimA-like FMN-containing flavoprotein (pyridoxamine 5'-phosphate oxidase superfamily),Ga0498909_158381,303,12,1.9760000077854403e-09,6.0,0,0.0,0.0
+187082,3300048829 assembled Ga0498908_47787_1_375,,nitroimidazol reductase NimA-like FMN-containing flavoprotein (pyridoxamine 5'-phosphate oxidase superfamily),Ga0498908_47787,375,9,1.88374913170938e-09,4.0,0,0.0,0.0
+230091,3300048829 assembled Ga0498908_09928_405_770,,nitroimidazol reductase NimA-like FMN-containing flavoprotein (pyridoxamine 5'-phosphate oxidase superfamily),Ga0498908_09928,366,6,1.28671388777963e-09,2.0,0,0.0,0.0
