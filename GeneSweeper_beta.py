@@ -12,16 +12,9 @@ out_file_path = os.path.join(path, 'Output_files')
 
 extension = '.csv'
 files = [file for file in os.listdir(csv_file_path) if file.endswith(extension)]
+outFiles = []
+print(outFiles)
 
-def linkGen():
-    outFiles = [file for file in os.listdir(out_file_path) if file.endswith(extension)]
-
-    urls = [
-        f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={row[0].split()[0]}&data_type=assembled&gene_oid={row[0].split()[2]}"
-        for file in outFiles
-        for row in csv.reader(open(os.path.join(out_file_path, file), 'r'))
-    ]
-    return urls
 
 
 df = pd.concat(pd.read_csv(os.path.join(csv_file_path, file), delimiter='\t') for file in files)
@@ -65,6 +58,8 @@ def on_begin():
         print("done")
     else:
         print("No items are in cart!")
+    outFiles = [file for file in os.listdir(out_file_path) if file.endswith(extension)] # Creates list of output files
+    print(outFiles)
 
 def on_clear():
     search_list.delete('0','end')
@@ -120,6 +115,40 @@ def back_to_root(root2):
     # Close root2 and show the root window again
     root2.destroy()
     root.deiconify()
+def linkGen():
+    outFiles = [file for file in os.listdir(out_file_path) if file.endswith(extension)] # Creates list of output files
+    print(outFiles)
+    """
+    urls = [
+    f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={row[0].split()[0]}&data_type=assembled&gene_oid={row[0].split()[2]}"
+    for file in outFiles
+    for row in csv.reader(open(os.path.join(out_file_path, file), 'r'))
+    ]
+    """
+    urls = []
+    for file in outFiles:
+        print(file)
+        for reader in [csv.reader(open(os.path.join(out_file_path, file), 'r'))]:
+            next(reader)  # Skip the header row
+            for row in reader:
+                values = row[1].split()
+                locustag = values
+                id = locustag[0]
+                ga = locustag[2]
+                url = f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={id}&data_type=assembled&gene_oid={ga}"
+                urls.append(url)
+
+        # for row in csv.reader(open(os.path.join(out_file_path, file), 'r')):
+        #     print(row, 'THIS IS THE ROW HERE AHHHHH')
+        #     values = row[2].split()
+        #     print(values)
+        #     locustag = values.split()
+        #     id = locustag[0]
+        #     ga = locustag[2]
+        #     url = f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={id}&data_type=assembled&gene_oid={ga}"
+        #     urls.append(url)
+    print(urls[0])
+    return urls
 
 #Main loop
 root = tk.Tk()
