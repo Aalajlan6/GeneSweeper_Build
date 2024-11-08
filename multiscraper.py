@@ -31,35 +31,35 @@ login_response = session.post(login_url, data=login_data)
 # Check if login was successful
 if login_response.ok:
     print("Login successful!")
+else:
+    print("Login failed.")
+    exit()
 
-    def scrape_url(url):
-        try:
-            # Now access the page after logging in
-            page_response = session.get(url)
-            page_response.raise_for_status()
+def scrape_url(url):
+    try:
+        # Now access the page after logging in
+        page_response = session.get(url)
+        page_response.raise_for_status()
 
-            # Parse the page content
-            soup = BeautifulSoup(page_response.text, 'html.parser')
+        # Parse the page content
+        soup = BeautifulSoup(page_response.text, 'html.parser')
 
-            # Find the desired div and extract its text
-            div_content = soup.find('div', id=div_id)
+        # Find the desired div and extract its text
+        div_content = soup.find('div', id=div_id)
+        
+        if div_content:
+            text1 = div_content.find('font').get_text(strip=True)
+            text2 = div_content.find('font').next_sibling.strip()
+            text_content = f"{text1}\n{text2}"
+            return f"{text_content}\n"
+        else:
+            return f"URL: {url}\nError: Div not found\n\n"
             
-            if div_content:
-                text1 = div_content.find('font').get_text(strip=True)
-                text2 = div_content.find('font').next_sibling.strip()
-                text_content = f"{text1}\n{text2}"
-                return f"{text_content}\n"
-            else:
-                return f"URL: {url}\nError: Div not found\n\n"
-                
-        except requests.exceptions.RequestException as e:
-            return f"URL: {url}\nError: {e}\n\n"
+    except requests.exceptions.RequestException as e:
+        return f"URL: {url}\nError: {e}\n\n"
 
-    # Open CSV and iterate through the URLs
-    with open(csv_file_path, 'r') as csv_file, open(output_file_path, 'w') as output_file:
-        csv_reader = csv.reader(csv_file)
-        urls = [row[1] for row in csv_reader]
-
+def scrape_urls(urls):
+    with open(output_file_path, 'w') as output_file:
         # Use ThreadPoolExecutor to scrape URLs concurrently
         with ThreadPoolExecutor(max_workers=10) as executor:
             results = executor.map(scrape_url, urls)
@@ -67,8 +67,11 @@ if login_response.ok:
         for result in results:
             output_file.write(result)
 
-    print("Scraping completed. Check output.txt.")
+    print("Scraping completed.")
 
-else:
-    print("Login failed.")
-    #print(login_response.text)  # Print the response content for debugging
+# # Open CSV and iterate through the URLs
+# with open(csv_file_path, 'r') as csv_file:
+#     csv_reader = csv.reader(csv_file)
+#     urls = [row[1] for row in csv_reader]
+
+# scrape_urls(urls)

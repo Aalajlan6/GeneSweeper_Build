@@ -3,8 +3,9 @@ import os
 import tkinter as tk
 from tkinter import *
 import csv
-#import ipywidgets
 from matplotlib import pyplot as plt
+from multiscraper import scrape_urls  # Import the scrape_urls function
+
 path = os.path.dirname(os.path.abspath(__file__))
 csv_file_path = os.path.join(path, 'CSV_files')
 out_file_path = os.path.join(path, 'Output_files')
@@ -12,24 +13,13 @@ out_file_path = os.path.join(path, 'Output_files')
 extension = '.csv'
 files = [file for file in os.listdir(csv_file_path) if file.endswith(extension)]
 
+urls = [
+    f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={row[0].split()[0]}&data_type=assembled&gene_oid={row[0].split()[2]}"
+    for file in files
+    for row in csv.reader(open(os.path.join(csv_file_path, file), 'r'))
+]
 
-# print(files)
-dfs = []
-
-for file in files:
-    # df = pd.read_csv(os.path.join(csv_file_path,file), delimiter='\t')
-    # dfs.append(df)
-    # df = pd.concat(dfs, ignore_index=True)
-    file = "./CSV_files/" + file
-    with open(file, 'r') as csv_file:
-        csv_reader = csv.reader(csv_file)
-        #print([row for row in csv_reader])
-        for row in csv_reader:
-            values = row[0].split()
-            id = values[0]
-            loc_id = values[2]
-            url = f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={id}&data_type=assembled&gene_oid={loc_id}"
-
+df = pd.concat(pd.read_csv(os.path.join(csv_file_path, file), delimiter='\t') for file in files)
 products = df['PRODUCT NAME'].unique()
 
 #Show suggestions
@@ -118,6 +108,7 @@ def startScraper():
     root.withdraw
     root3 = tk.Tk()
     root3.title('FASTA scraper')
+    scrape_urls(urls)
 
 def back_to_root(root2):
     # Close root2 and show the root window again
