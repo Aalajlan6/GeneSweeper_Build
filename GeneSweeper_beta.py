@@ -55,6 +55,8 @@ def on_begin():
         print(golden_products)
         for product in golden_products:
             filtered_df = df[df["PRODUCT NAME"].str.lower() == product.lower()]
+            if '/' in product:
+                product = product.replace('/', '_')
             filtered_df.to_csv(os.path.join(out_file_path, (product + ".csv")))
         print("done")
     else:
