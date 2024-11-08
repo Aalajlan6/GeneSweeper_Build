@@ -13,11 +13,16 @@ out_file_path = os.path.join(path, 'Output_files')
 extension = '.csv'
 files = [file for file in os.listdir(csv_file_path) if file.endswith(extension)]
 
-urls = [
-    f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={row[0].split()[0]}&data_type=assembled&gene_oid={row[0].split()[2]}"
-    for file in files
-    for row in csv.reader(open(os.path.join(csv_file_path, file), 'r'))
-]
+def linkGen():
+    outFiles = [file for file in os.listdir(out_file_path) if file.endswith(extension)]
+
+    urls = [
+        f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={row[0].split()[0]}&data_type=assembled&gene_oid={row[0].split()[2]}"
+        for file in outFiles
+        for row in csv.reader(open(os.path.join(out_file_path, file), 'r'))
+    ]
+    return urls
+
 
 df = pd.concat(pd.read_csv(os.path.join(csv_file_path, file), delimiter='\t') for file in files)
 products = df['PRODUCT NAME'].unique()
@@ -105,6 +110,7 @@ def startPage():
     button_back.grid(row=2, column=1, padx=10, pady=10)
 
 def startScraper():
+    urls = linkGen()
     root.withdraw
     root3 = tk.Tk()
     root3.title('FASTA scraper')
