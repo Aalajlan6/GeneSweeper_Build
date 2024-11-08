@@ -115,7 +115,7 @@ def startScraper():
     done = multiscrape_urls(urls)
     if done:
         #adding a label to the root window
-        lbl = Label(root3, text = "\n\n\n                                     Done scraping!")
+        lbl = Label(root3, text = "\n\n\n                                 Done scraping!")
         lbl.place(x=175, y=25, anchor="center")
         lbl.grid()
 
