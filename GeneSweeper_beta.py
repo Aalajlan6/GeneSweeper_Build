@@ -4,7 +4,8 @@ import tkinter as tk
 from tkinter import *
 import csv
 from matplotlib import pyplot as plt
-from multiscraper import scrape_urls  # Import the scrape_urls function
+from multiscraper import multiscrape_urls  # Import the multiscrape_urls function
+#from scraper import scrape_urls  # Import the scrape_urls function
 
 path = os.path.dirname(os.path.abspath(__file__))
 csv_file_path = os.path.join(path, 'CSV_files')
@@ -106,10 +107,11 @@ def startPage():
 
 def startScraper():
     urls = linkGen()
+    print(urls)
     root.withdraw
     root3 = tk.Tk()
     root3.title('FASTA scraper')
-    scrape_urls(urls)
+    multiscrape_urls(urls)
 
 def back_to_root(root2):
     # Close root2 and show the root window again
@@ -117,38 +119,16 @@ def back_to_root(root2):
     root.deiconify()
 def linkGen():
     outFiles = [file for file in os.listdir(out_file_path) if file.endswith(extension)] # Creates list of output files
-    print(outFiles)
-    """
-    urls = [
-    f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={row[0].split()[0]}&data_type=assembled&gene_oid={row[0].split()[2]}"
-    for file in outFiles
-    for row in csv.reader(open(os.path.join(out_file_path, file), 'r'))
-    ]
-    """
     urls = []
     for file in outFiles:
-        print(file)
-        for reader in [csv.reader(open(os.path.join(out_file_path, file), 'r'))]:
+        with open(os.path.join(out_file_path, file), 'r') as f:
+            reader = csv.reader(f)
             next(reader)  # Skip the header row
             for row in reader:
-                values = row[1].split()
-                locustag = values
-                id = locustag[0]
-                ga = locustag[2]
+                id, _, ga = row[1].split()[:3]
                 url = f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={id}&data_type=assembled&gene_oid={ga}"
                 urls.append(url)
-
-        # for row in csv.reader(open(os.path.join(out_file_path, file), 'r')):
-        #     print(row, 'THIS IS THE ROW HERE AHHHHH')
-        #     values = row[2].split()
-        #     print(values)
-        #     locustag = values.split()
-        #     id = locustag[0]
-        #     ga = locustag[2]
-        #     url = f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={id}&data_type=assembled&gene_oid={ga}"
-        #     urls.append(url)
-    print(urls[0])
-    return urls
+    return urls[:10]  # Return only the first 10 URLs
 
 #Main loop
 root = tk.Tk()
