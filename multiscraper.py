@@ -61,13 +61,14 @@ def scrape_url(url):
 def multiscrape_urls(urls):
     with open(output_file_path, 'w') as output_file:
         # Use ThreadPoolExecutor to scrape URLs concurrently
-        with ThreadPoolExecutor(max_workers=100) as executor:
+        with ThreadPoolExecutor(max_workers=10) as executor:
             results = executor.map(scrape_url, urls)
 
         for result in results:
             output_file.write(result)
 
     print("Scraping completed.")
+    return True
 
 # # Open CSV and iterate through the URLs
 # with open(csv_file_path, 'r') as csv_file:

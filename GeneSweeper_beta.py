@@ -109,8 +109,14 @@ def startScraper():
     urls = linkGen()
     root.withdraw
     root3 = tk.Tk()
-    root3.title('FASTA scraper')
-    multiscrape_urls(urls)
+    root3.title('Welcome to GeneSweeper 3.0')
+    root3.geometry('350x200')
+    done = multiscrape_urls(urls)
+    if done:
+        #adding a label to the root window
+        lbl = Label(root3, text = "\n\n\n                                     Done scraping!")
+        lbl.place(x=175, y=25, anchor="center")
+        lbl.grid()
 
 def back_to_root(root2):
     # Close root2 and show the root window again
@@ -127,7 +133,7 @@ def linkGen():
                 id, _, ga = row[1].split()[:3]
                 url = f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={id}&data_type=assembled&gene_oid={ga}"
                 urls.append(url)
-    return urls
+    return urls[:10]
 
 #Main loop
 root = tk.Tk()
