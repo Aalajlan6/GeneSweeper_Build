@@ -107,7 +107,6 @@ def startPage():
 
 def startScraper():
     urls = linkGen()
-    print(urls)
     root.withdraw
     root3 = tk.Tk()
     root3.title('FASTA scraper')
@@ -128,7 +127,7 @@ def linkGen():
                 id, _, ga = row[1].split()[:3]
                 url = f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={id}&data_type=assembled&gene_oid={ga}"
                 urls.append(url)
-    return urls[:10]  # Return only the first 10 URLs
+    return urls
 
 #Main loop
 root = tk.Tk()

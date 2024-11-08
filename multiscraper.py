@@ -58,10 +58,10 @@ def scrape_url(url):
     except requests.exceptions.RequestException as e:
         return f"URL: {url}\nError: {e}\n\n"
 
-def scrape_urls(urls):
+def multiscrape_urls(urls):
     with open(output_file_path, 'w') as output_file:
         # Use ThreadPoolExecutor to scrape URLs concurrently
-        with ThreadPoolExecutor(max_workers=10) as executor:
+        with ThreadPoolExecutor(max_workers=100) as executor:
             results = executor.map(scrape_url, urls)
 
         for result in results:
