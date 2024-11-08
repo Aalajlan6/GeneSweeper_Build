@@ -14,7 +14,6 @@ out_file_path = os.path.join(path, 'Output_files')
 extension = '.csv'
 files = [file for file in os.listdir(csv_file_path) if file.endswith(extension)]
 outFiles = []
-print(outFiles)
 
 
 
