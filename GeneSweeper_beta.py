@@ -135,12 +135,12 @@ def linkGen():
                 id, _, ga = row[1].split()[:3]
                 url = f"https://img.jgi.doe.gov/cgi-bin/mer/main.cgi?section=MetaGeneDetail&page=genePageMainFaa&taxon_oid={id}&data_type=assembled&gene_oid={ga}"
                 urls.append(url)
-    return urls[:10]
+    return urls
 
 #Main loop
 root = tk.Tk()
 root.title("Main Window")
-root.geometry("300x300+50+50")
+root.geometry("300x400")
 
 button_to_open_root2 = tk.Button(root, text="Open Product Search", command=startPage)
 button_to_open_root2.pack(pady=20)

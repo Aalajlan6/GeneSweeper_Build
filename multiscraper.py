@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # Define URLs and login credentials
 login_url = 'https://signon.jgi.doe.gov/signon/create'  # URL for the login page
-csv_file_path = './Link_Output_1.csv'  # CSV with links to scrape
+csv_file_path = 'nitrous oxide reductase.csv'  # CSV with links to scrape
 output_file_path = 'multioutput.fasta'  # Output file path
 div_id = 'content_other'  # Change this to the div you want to scrape
 
@@ -61,7 +61,7 @@ def scrape_url(url):
 def multiscrape_urls(urls):
     with open(output_file_path, 'w') as output_file:
         # Use ThreadPoolExecutor to scrape URLs concurrently
-        with ThreadPoolExecutor(max_workers=10) as executor:
+        with ThreadPoolExecutor(max_workers=100) as executor:
             results = executor.map(scrape_url, urls)
 
         for result in results:
